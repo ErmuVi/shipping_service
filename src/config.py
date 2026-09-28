@@ -20,7 +20,6 @@ class Settings(BaseSettings):
     DB_PASSWORD: str = Field(default=...)
     DB_NAME: str = Field(default=...)
 
-
     @property
     def database_url(self) -> str:
 
