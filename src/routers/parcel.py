@@ -9,6 +9,7 @@ from sqlalchemy.orm import joinedload
 from src.database import get_async_session
 from src.models import Parcel, ParcelType
 from src.schemas.parcel import ParcelCreate, ParcelResponse
+from src.worker import calculate_delivery_task
 
 router = APIRouter(prefix="/parcels", tags=["Parcels"])
 
@@ -89,3 +90,12 @@ async def get_parcel_by_id(
 
     parcel.type_name = parcel.type.name
     return parcel
+
+
+@router.post("/calculate-now")
+def trigger_delivery_calculation():
+    calculate_delivery_task.delay()
+    return {
+        "status": "success",
+        "message": "Расчёт стоимости доставки успешно запущен в фоновом режиме",
+    }

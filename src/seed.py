@@ -5,15 +5,11 @@ from sqlalchemy import select
 from src.database import session_maker
 from src.models import ParcelType
 
-# Настраиваем логирование, чтобы в консоли было видно, что происходит
 logger = logging.getLogger(__name__)
 
 
 async def seed_parcel_types() -> None:
-    """
-    Автоматически наполняет таблицу типов посылок базовыми значениями,
-    если она пустая (Одежда, Электроника, Разное).
-    """
+
     REQUIRED_TYPES = ["Одежда", "Электроника", "Разное"]
 
     async with session_maker() as session:

@@ -1,6 +1,6 @@
 import uuid
 from decimal import Decimal
-from typing import TYPE_CHECKING, ClassVar, Optional
+from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import ForeignKey, Numeric, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -13,6 +13,8 @@ if TYPE_CHECKING:
 
 class Parcel(Base):
     __tablename__ = "parcels"
+
+    __allow_unmapped__ = True
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
 
@@ -32,4 +34,12 @@ class Parcel(Base):
 
     type: Mapped["ParcelType"] = relationship()
 
-    type_name: ClassVar[Optional[str]] = None
+    _type_name: str | None = None
+
+    @property
+    def type_name(self) -> str | None:
+        return self._type_name
+
+    @type_name.setter
+    def type_name(self, value: str | None) -> None:
+        self._type_name = value
