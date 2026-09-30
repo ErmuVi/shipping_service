@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     PORT: int = 8000
 
+    OPENROUTER_API_KEY: str = Field(default=...)
     DB_HOST: str = Field(default=...)
     DB_PORT: int = Field(default=...)
     DB_USER: str = Field(default=...)
