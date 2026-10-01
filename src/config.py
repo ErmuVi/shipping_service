@@ -20,6 +20,18 @@ class Settings(BaseSettings):
     DB_USER: str = Field(default=...)
     DB_PASSWORD: str = Field(default=...)
     DB_NAME: str = Field(default=...)
+    REDIS_HOST: str = "redis"
+    REDIS_PORT: int = 6379
+    QDRANT_HOST: str = "qdrant"
+    QDRANT_PORT: int = 6333
+
+    @property
+    def qdrant_url(self) -> str:
+        return f"http://{self.QDRANT_HOST}:{self.QDRANT_PORT}"
+
+    @property
+    def redis_url(self) -> str:
+        return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/0"
 
     @property
     def database_url(self) -> str:

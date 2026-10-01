@@ -33,6 +33,8 @@ class Parcel(Base):
     type_id: Mapped[int] = mapped_column(ForeignKey("parcel_types.id"), nullable=False)
 
     type: Mapped["ParcelType"] = relationship()
+    
+    carrier_name: Mapped[Optional[str]] = mapped_column(String(100), nullable=True, default=None)
 
     _type_name: str | None = None
 

@@ -1,7 +1,8 @@
 import httpx
 import redis.asyncio as aioredis
+from src.config import settings
 
-redis_client = aioredis.from_url("redis://localhost:6379", decode_responses=True)
+redis_client = aioredis.from_url(settings.redis_url, decode_responses=True)
 
 
 async def get_usd_rate() -> float:

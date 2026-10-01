@@ -7,11 +7,13 @@ from langchain_text_splitters import CharacterTextSplitter
 from qdrant_client import AsyncQdrantClient, QdrantClient
 from qdrant_client.models import Distance, VectorParams
 
+from src.config import settings
+
 logger = logging.getLogger(__name__)
 
 embeddings = FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 
-QDRANT_URL = "http://localhost:6333"
+QDRANT_URL = settings.qdrant_url
 COLLECTION_NAME = "shipping_knowledge_base"
 
 
