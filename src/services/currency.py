@@ -3,24 +3,27 @@ import redis.asyncio as aioredis
 
 from src.config import settings
 
-redis_client = aioredis.from_url(settings.redis_url, decode_responses=True)
-
 
 async def get_usd_rate() -> float:
+    redis_client = aioredis.from_url(settings.redis_url, decode_responses=True)
 
-    usd_rate = await redis_client.get("usd_rate")
+    try:
 
-    if usd_rate is not None:
-        return float(usd_rate)
+        usd_rate = await redis_client.get("usd_rate")
 
-    url = "https://www.cbr-xml-daily.ru/daily_json.js"
+        if usd_rate is not None:
+            return float(usd_rate)
 
-    async with httpx.AsyncClient() as client:
-        response = await client.get(url)
-        data = response.json()
+        url = "https://www.cbr-xml-daily.ru/daily_json.js"
 
-    rate = float(data["Valute"]["USD"]["Value"])
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url)
+            data = response.json()
 
-    await redis_client.set("usd_rate", str(rate), ex=3600)
+        rate = float(data["Valute"]["USD"]["Value"])
 
-    return rate
+        await redis_client.set("usd_rate", str(rate), ex=3600)
+        return rate
+
+    finally:
+        await redis_client.aclose()
