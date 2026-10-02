@@ -3,19 +3,22 @@ from decimal import Decimal
 
 from sqlalchemy import select
 
-from src.database import session_maker
+from src.database import session_maker as global_session_maker
 from src.models import Parcel
 
 logger = logging.getLogger(__name__)
 
 
-async def calculate_pending_deliveries(usd_rate: float) -> int:
+async def calculate_pending_deliveries(usd_rate: float, session_maker=None) -> int:
     rate_decimal = Decimal(str(usd_rate))
 
     logger.info(
         "Запущена фоновая задача расчёта стоимостей."
         f" Актуальный курс USD: {usd_rate} руб."
     )
+
+    if session_maker is None:
+        session_maker = global_session_maker
 
     async with session_maker() as session:
         query = select(Parcel).where(Parcel.delivery_cost.is_(None))

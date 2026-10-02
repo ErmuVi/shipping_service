@@ -1,7 +1,10 @@
 from decimal import Decimal
+
 import pytest
 from pydantic import ValidationError
+
 from src.schemas.parcel import ParcelCreate
+
 
 def test_parcel_create_valid_data():
     # Проверям что схема работает)
@@ -21,10 +24,10 @@ def test_parcel_create_valid_data():
 @pytest.mark.parametrize(
     "weight, content_value",
     [
-        (-0.5, Decimal("10.00")),   # Отрицательный вес
-        (0.0, Decimal("10.00")),    # Нулевой вес
-        (1.5, Decimal("-50.00")),   # Отрицательная стоимость
-    ]
+        (-0.5, Decimal("10.00")),  # Отрицательный вес
+        (0.0, Decimal("10.00")),  # Нулевой вес
+        (1.5, Decimal("-50.00")),  # Отрицательная стоимость
+    ],
 )
 # Одна функция на некоректные цифры
 def test_parcel_create_invalid_data(weight, content_value):

@@ -1,8 +1,11 @@
 from decimal import Decimal
 from unittest.mock import patch
+
 import pytest
+
 from src.models import Parcel
 from src.models.parcel_type import ParcelType
+
 
 @pytest.mark.asyncio
 async def test_create_and_get_parcel_flow(ac, session):
@@ -31,7 +34,7 @@ async def test_create_and_get_parcel_flow(ac, session):
     # Если роут возвращает пагинированный словарь (с ключом результатов), достаем список
     if isinstance(parcels_list, dict) and "results" in parcels_list:
         parcels_list = parcels_list["results"]
-        
+
     if isinstance(parcels_list, list):
         assert len(parcels_list) == 1
         assert parcels_list[0]["id"] == parcel_id
@@ -71,4 +74,6 @@ async def test_ask_support_endpoint(mock_llm, ac):
 
     # Проверяем, что роут вернул правильную структуру из ТЗ
     assert response.status_code == 200
-    assert response.json()["answer"] == "Ноутбуки отправлять можно, если батарея внутри."
+    assert (
+        response.json()["answer"] == "Ноутбуки отправлять можно, если батарея внутри."
+    )
