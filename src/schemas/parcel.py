@@ -3,14 +3,14 @@ from decimal import Decimal
 
 from pydantic import BaseModel, Field, field_serializer
 
-
+#Тоже валидация данных
 class ParcelCreate(BaseModel):
     name: str
     weight: float = Field(gt=0)
     content_value: Decimal = Field(gt=0)
     type_id: int
 
-
+#Тут исходящие данные валидируем, и делаем норм вид(return "Не рассчитано" вместо None, что бы было читаемо)
 class ParcelResponse(BaseModel):
     id: uuid.UUID
     name: str

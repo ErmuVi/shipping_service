@@ -10,7 +10,7 @@ from src.database import Base
 if TYPE_CHECKING:
     from src.models.parcel_type import ParcelType
 
-
+#Тоже описание таблицы для бд
 class Parcel(Base):
     __tablename__ = "parcels"
 

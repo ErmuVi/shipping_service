@@ -13,7 +13,8 @@ from src.worker import calculate_delivery_task
 
 router = APIRouter(prefix="/parcels", tags=["Parcels"])
 
-
+#Пользователь дает данные о посылке, мы валидируем, присваимваем session_id посылке
+# и добовляем данные в бд
 @router.post("")
 async def create_parcel(
     parcel_data: ParcelCreate,
@@ -37,7 +38,7 @@ async def create_parcel(
 
     return {"id": new_parcel.id}
 
-
+#Эндпоинт позволяющий пользователю посмотреть его посылки, используя фильтры
 @router.get("", response_model=list[ParcelResponse])
 async def get_my_parcels(
     request: Request,
@@ -72,7 +73,7 @@ async def get_my_parcels(
 
     return parcels
 
-
+#Эндпоинт позволяющий пользователю найти свою посылку по айди, чужие не получится
 @router.get("/{parcel_id}", response_model=ParcelResponse)
 async def get_parcel_by_id(
     parcel_id: uuid.UUID,
@@ -91,7 +92,7 @@ async def get_parcel_by_id(
     parcel.type_name = parcel.type.name
     return parcel
 
-
+#Запуск перерасчета стоимости доставки посылки в ручном режиме, для отладки и проверки работы
 @router.post("/calculate-now")
 def trigger_delivery_calculation():
     calculate_delivery_task.delay()

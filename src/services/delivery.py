@@ -8,7 +8,7 @@ from src.models import Parcel
 
 logger = logging.getLogger(__name__)
 
-
+#Функция расчета стоимости доставки, все происходит в фоне, для тех посылок для которых она еще не посчитана
 async def calculate_pending_deliveries(usd_rate: float, session_maker=None) -> int:
     rate_decimal = Decimal(str(usd_rate))
 

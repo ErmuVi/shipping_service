@@ -15,7 +15,7 @@ from src.services.rag import init_vector_store
 
 logger = logging.getLogger(__name__)
 
-
+#При запуске сервиса инициилизируем создание типов посылок и преваращаем нашу базу знаний в вектора
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await seed_parcel_types()

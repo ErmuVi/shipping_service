@@ -16,7 +16,7 @@ embeddings = FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 QDRANT_URL = settings.qdrant_url
 COLLECTION_NAME = "shipping_knowledge_base"
 
-
+#Делит базу на чанки и преваращает слова в эмбендинги(векторы чилел - что бы это не значило)))
 async def init_vector_store() -> None:
     client = QdrantClient(url=QDRANT_URL, check_compatibility=False)
 
@@ -56,7 +56,7 @@ async def init_vector_store() -> None:
 
     logger.info(f"База знаний успешно векторизована! Загружено чанков: {len(docs)}")
 
-
+#Берет запрос превращает его в эмбендиг и сравнивает с наиболее похожими из бд
 async def search_knowledge_base(query: str) -> str:
     async_client = AsyncQdrantClient(url=QDRANT_URL, check_compatibility=False)
     query_vector = embeddings.embed_query(query)

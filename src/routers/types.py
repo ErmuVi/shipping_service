@@ -8,7 +8,7 @@ from src.schemas.parcel_type import ParcelTypeRead
 
 router = APIRouter(prefix="/types", tags=["Types"])
 
-
+#Эндпоинт позволяющий узнать какие типы посылок есть в сервисе
 @router.get("", response_model=list[ParcelTypeRead])
 async def read_types(db: AsyncSession = Depends(get_async_session)):
     query = select(ParcelType)

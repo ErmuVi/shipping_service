@@ -3,7 +3,7 @@ import uuid
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 
-
+#Middleware проверяющее есть ли у пользователя в куках "session_id", если нет то создает для него, и запоминает
 class SessionMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> Response:
         session_id = request.cookies.get("session_id")

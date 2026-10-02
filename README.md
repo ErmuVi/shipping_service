@@ -39,7 +39,7 @@ REDIS_PORT=6379
 QDRANT_HOST=qdrant
 QDRANT_PORT=6333
 
-OPENROUTER_API_KEY=ваш_ключ_api
+OPENROUTER_API_KEY=ваш_ключ_api(В `.env.example` этой строки нету, надо добавить)
 ```
 
 ### 2. Сборка и запуск контейнеров

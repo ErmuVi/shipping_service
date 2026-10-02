@@ -3,7 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from src.database import Base
 
-
+#Описание таблицы для бд
 class ParcelType(Base):
     __tablename__ = "parcel_types"
 
