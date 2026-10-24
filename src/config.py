@@ -14,6 +14,13 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     PORT: int = 8000
 
+    # Кука сессии: 1 год, чтобы посылки не терялись после закрытия браузера
+    SESSION_COOKIE_MAX_AGE: int = 60 * 60 * 24 * 365
+    COOKIE_SECURE: bool = False
+
+    # Список origin'ов для CORS (пусто = выключен, фронтенд работает через прокси)
+    CORS_ORIGINS: list[str] = []
+
     OPENROUTER_API_KEY: str = Field(default=...)
     DB_HOST: str = Field(default=...)
     DB_PORT: int = Field(default=...)
