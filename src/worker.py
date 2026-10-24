@@ -22,8 +22,15 @@ celery_app.conf.beat_schedule = {
 celery_app.conf.timezone = "UTC"
 
 
-@celery_app.task
-def calculate_delivery_task():
+@celery_app.task(
+    bind=True,
+    autoretry_for=(Exception,),
+    max_retries=3,
+    retry_backoff=True,
+    retry_backoff_max=300,
+    retry_jitter=True,
+)
+def calculate_delivery_task(self):
     async def run_pipeline():
         usd_rate = await get_usd_rate()
 
