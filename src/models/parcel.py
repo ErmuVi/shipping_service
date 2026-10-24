@@ -1,8 +1,9 @@
 import uuid
+from datetime import datetime
 from decimal import Decimal
 from typing import TYPE_CHECKING, Optional
 
-from sqlalchemy import ForeignKey, Numeric, String
+from sqlalchemy import DateTime, ForeignKey, Numeric, String, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database import Base
@@ -36,6 +37,10 @@ class Parcel(Base):
 
     carrier_name: Mapped[Optional[str]] = mapped_column(
         String(100), nullable=True, default=None
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
     )
 
     _type_name: str | None = None
