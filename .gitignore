@@ -1,2 +1,24 @@
 .env
 
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Кеши и отчеты инструментов
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Celery
+celerybeat-schedule
+
+# Фронтенд
+frontend/node_modules/
+frontend/dist/
+
+# ОС и редакторы
+.DS_Store
