@@ -1,24 +1,31 @@
-# Используем официальный легкий образ Python
+# ---------- Этап 1: сборка фронтенда ----------
+FROM node:20-alpine AS frontend
+
+WORKDIR /frontend
+
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+
+COPY frontend/ ./
+RUN npm run build
+
+# ---------- Этап 2: бэкенд ----------
 FROM python:3.12-slim
 
-# Настраиваем переменные окружения для логов
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-# Настраиваем рабочую директорию внутри контейнера
 WORKDIR /app
 
-# Ставим утилиту curl (она нужна для проверки здоровья Qdrant в docker-compose)
+# Ставим утилиту curl (нужна для проверки здоровья Qdrant в docker-compose)
 RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
-# Копируем файл зависимостей, который вы сгенерировали
 COPY requirements.txt .
-
-# Устанавливаем библиотеки напрямую через стандартный pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копируем весь остальной код проекта в контейнер
 COPY . .
 
-# Открываем порт для FastAPI
+# Собранный фронтенд FastAPI отдает из /app/static
+COPY --from=frontend /frontend/dist ./static
+
 EXPOSE 8000
