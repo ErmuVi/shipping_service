@@ -6,16 +6,20 @@ from src.services.rag import search_knowledge_base
 
 router = APIRouter(prefix="/support", tags=["Support"])
 
-#Эндпоинт отвечающий за rag систему
-#Как я понимаю эту систему - мы берем вопрос пользователя, он превращается в эмбендинг(я еще не совсем понимаю что это),
-#и отпровляется в векторную бд(квадрант в нашем случае), там математически находятся похожие обзацы(поделены нами на чанки заранее в другой функц.),
-#и потом этот обзац из наших правил и вопрос пользователя отправляются в llm в контекстом(промтом), и от туда мы уже берем ответ.
+# Эндпоинт RAG-системы:
+# 1. Вопрос пользователя превращается в эмбеддинг.
+# 2. В векторной БД (Qdrant) находятся похожие чанки правил.
+# 3. Чанки и вопрос отправляются в LLM как контекст, ответ возвращается клиенту.
 @router.post("/ask", response_model=SupportResponse)
 async def ask_support(payload: SupportRequest):
     question = payload.question
 
     context = await search_knowledge_base(question)
 
-    answer = await generate_support_answer(question, context)
+    answer = await generate_support_answer(
+        question,
+        context,
+        history=[message.model_dump() for message in payload.history],
+    )
 
     return SupportResponse(answer=answer)
